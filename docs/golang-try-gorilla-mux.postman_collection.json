@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"Code\": \"X96\",\n    \"Price\": 100\n}",
+					"raw": "{\n    \"Code\": \"X192\",\n    \"Price\": 100\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -64,6 +64,78 @@
 						"api",
 						"product",
 						"X96"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "xml/articles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/xml/articles",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"xml",
+						"articles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "xml/article",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Article data-id=\"3\">\n    <id>123333</id>\n    <title>asdf</title>\n    <desc>ddd</desc>\n    <content>d</content>\n</Article>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/xml/article",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"xml",
+						"article"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/articles",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Article data-id=\"3\">\n    <id>123333</id>\n    <title>asdf</title>\n    <desc>ddd</desc>\n    <content>d</content>\n</Article>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/articles",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"articles"
 					]
 				}
 			},
