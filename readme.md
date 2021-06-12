@@ -6,6 +6,7 @@
 # TODO
 
 - [x] use sqlite3 for some persistence
+- [ ] create swagger doc
 
 # Refs
 
@@ -14,7 +15,7 @@
 
 ```
 sqlite3
-.open test.db
+.open .data.db
 .mode line
 select * from products;
 ```
