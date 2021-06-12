@@ -18,8 +18,8 @@ type Product struct {
 }
 
 type ResponseMessage struct {
-	Code    string `json:"code"`
-	Message string `json:"message"`
+	Code    string `json:"Code"`
+	Message string `json:"Message"`
 }
 
 func Connect() (db *gorm.DB) {
@@ -65,17 +65,18 @@ func CreateProductHandler(w http.ResponseWriter, r *http.Request) {
 	err := json.Unmarshal(body, &product)
 	if err != nil {
 		fmt.Println(err)
-		json.NewEncoder(w).Encode(&ResponseMessage{Message: "Bad payload.", Code: ""})
 		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(&ResponseMessage{Message: "Bad payload.", Code: ""})
 		return
 	}
 
 	var existingProduct Product
-	res := db.Where(&existingProduct, "Code =?", product.Code)
+	res := db.First(&existingProduct, "Code = ?", product.Code)
+	fmt.Println(res.RowsAffected, product.Code)
 	if res.Error == nil {
 		fmt.Println("Already exist.")
-		json.NewEncoder(w).Encode(&ResponseMessage{Message: "Resource already exist.", Code: ""})
 		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(&ResponseMessage{Message: "Resource already exist.", Code: ""})
 		return
 	}
 
