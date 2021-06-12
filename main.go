@@ -10,39 +10,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "welcome to the homepage")
-	fmt.Println("endpoitnn hit")
-}
-
-func handleRequest() {
-
-	myRouter := mux.NewRouter().StrictSlash(true)
-
-	jsonSubRoutes := myRouter.PathPrefix("/api").Subrouter()
-	myRouter.HandleFunc("/", homePage)
-
-	jsonSubRoutes.HandleFunc("/articles", handlers.ReturnAllArticles)
-	jsonSubRoutes.HandleFunc("/article", handlers.CreateNewArticle).Methods("POST")
-	jsonSubRoutes.HandleFunc("/article/{id}", handlers.ReturnSingleArticle)
-	jsonSubRoutes.Use(loggingMiddleware)
-
-	myRouter.HandleFunc("/hello", returnHello).Methods("POST")
-	myRouter.HandleFunc("/hello", returnHello)
-	myRouter.HandleFunc("/sss", returnSSS)
-
-	log.Fatal(http.ListenAndServe(":10000", myRouter))
-}
-
-func returnSSS(w http.ResponseWriter, r *http.Request) {
-	const asdf = `asdfasdf`
-	fmt.Fprint(w, asdf)
-}
-
-func returnHello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, `{"yo": "brow"}`)
-}
-
 func main() {
 	fmt.Println("Rest API v2.0 - Mux Routers")
 
@@ -51,6 +18,25 @@ func main() {
 		{Id: "2", Title: "t12", Desc: "d1", Content: "content123213asdf"},
 	}
 	handleRequest()
+}
+
+func handleRequest() {
+
+	myRouter := mux.NewRouter().StrictSlash(true)
+
+	jsonSubRoutes := myRouter.PathPrefix("/api").Subrouter()
+	myRouter.HandleFunc("/", handlers.HomePage)
+
+	jsonSubRoutes.HandleFunc("/articles", handlers.ReturnAllArticles)
+	jsonSubRoutes.HandleFunc("/article", handlers.CreateNewArticle).Methods("POST")
+	jsonSubRoutes.HandleFunc("/article/{id}", handlers.ReturnSingleArticle)
+	jsonSubRoutes.Use(loggingMiddleware)
+
+	myRouter.HandleFunc("/hello", handlers.ReturnHello).Methods("POST")
+	myRouter.HandleFunc("/hello", handlers.ReturnHello)
+	myRouter.HandleFunc("/sss", handlers.ReturnSSS)
+
+	log.Fatal(http.ListenAndServe(":10000", myRouter))
 }
 
 func loggingMiddleware(next http.Handler) http.Handler {
