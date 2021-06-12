@@ -1,11 +1,11 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
+
+	"myapis/main/handlers"
 
 	"github.com/gorilla/mux"
 )
@@ -19,15 +19,17 @@ func handleRequest() {
 
 	myRouter := mux.NewRouter().StrictSlash(true)
 
+	jsonSubRoutes := myRouter.PathPrefix("/api").Subrouter()
 	myRouter.HandleFunc("/", homePage)
-	myRouter.HandleFunc("/articles", returnAllArticles)
-	myRouter.HandleFunc("/article", createNewArticle).Methods("POST")
-	myRouter.HandleFunc("/article/{id}", returnSingleArticle)
+
+	jsonSubRoutes.HandleFunc("/articles", handlers.ReturnAllArticles)
+	jsonSubRoutes.HandleFunc("/article", handlers.CreateNewArticle).Methods("POST")
+	jsonSubRoutes.HandleFunc("/article/{id}", handlers.ReturnSingleArticle)
+	jsonSubRoutes.Use(loggingMiddleware)
+
 	myRouter.HandleFunc("/hello", returnHello).Methods("POST")
 	myRouter.HandleFunc("/hello", returnHello)
 	myRouter.HandleFunc("/sss", returnSSS)
-
-	myRouter.Use(loggingMiddleware)
 
 	log.Fatal(http.ListenAndServe(":10000", myRouter))
 }
@@ -44,39 +46,11 @@ func returnHello(w http.ResponseWriter, r *http.Request) {
 func main() {
 	fmt.Println("Rest API v2.0 - Mux Routers")
 
-	Articles = []Article{
+	handlers.Articles = []handlers.Article{
 		{Id: "1", Title: "t1", Desc: "d", Content: "content123213"},
 		{Id: "2", Title: "t12", Desc: "d1", Content: "content123213asdf"},
 	}
 	handleRequest()
-}
-
-func returnAllArticles(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Articles hit")
-	json.NewEncoder(w).Encode(Articles)
-}
-
-func returnSingleArticle(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	key := vars["id"]
-
-	fmt.Println(vars)
-	fmt.Fprint(w, "Key: "+key)
-	for _, article := range Articles {
-		if article.Id == key {
-			json.NewEncoder(w).Encode(article)
-		}
-	}
-}
-
-func createNewArticle(w http.ResponseWriter, r *http.Request) {
-	reqBody, _ := ioutil.ReadAll(r.Body)
-	var article Article
-	json.Unmarshal(reqBody, &article)
-
-	Articles = append(Articles, article)
-
-	json.NewEncoder(w).Encode(article)
 }
 
 func loggingMiddleware(next http.Handler) http.Handler {
@@ -88,12 +62,3 @@ func loggingMiddleware(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
-
-type Article struct {
-	Id      string `json:"id"`
-	Title   string `json:"title"`
-	Desc    string `json:"desc"`
-	Content string `json:"content"`
-}
-
-var Articles []Article
