@@ -25,11 +25,19 @@ func handleRequest() {
 	myRouter.HandleFunc("/article/{id}", returnSingleArticle)
 	myRouter.HandleFunc("/hello", returnHello).Methods("POST")
 	myRouter.HandleFunc("/hello", returnHello)
+	myRouter.HandleFunc("/sss", returnSSS)
+
+	myRouter.Use(loggingMiddleware)
+
 	log.Fatal(http.ListenAndServe(":10000", myRouter))
 }
 
+func returnSSS(w http.ResponseWriter, r *http.Request) {
+	const asdf = `asdfasdf`
+	fmt.Fprint(w, asdf)
+}
+
 func returnHello(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprint(w, `{"yo": "brow"}`)
 }
 
@@ -45,7 +53,6 @@ func main() {
 
 func returnAllArticles(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Articles hit")
-	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(Articles)
 }
 
@@ -70,6 +77,16 @@ func createNewArticle(w http.ResponseWriter, r *http.Request) {
 	Articles = append(Articles, article)
 
 	json.NewEncoder(w).Encode(article)
+}
+
+func loggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		// Do stuff here
+		log.Println(r.RequestURI)
+		// Call the next handler, which can be another middleware in the chain, or the final handler.
+		next.ServeHTTP(w, r)
+	})
 }
 
 type Article struct {
