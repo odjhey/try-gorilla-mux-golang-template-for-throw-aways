@@ -58,7 +58,7 @@ func handleRequest() {
 
 	myRouter.HandleFunc("/", handlers.HomePage)
 
-	log.Fatal(http.ListenAndServe(":80", myRouter))
+	log.Fatal(http.ListenAndServe(":8080", myRouter))
 }
 
 func loggingMiddleware(next http.Handler) http.Handler {

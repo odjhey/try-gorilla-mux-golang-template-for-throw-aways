@@ -11,5 +11,5 @@ RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo -o build/main myapis
 FROM alpine
 RUN apk add --no-cache ca-certificates && update-ca-certificates
 COPY --from=builder /go/src/myapis/main/build/main /usr/bin/main
-EXPOSE 80
+EXPOSE 8080
 ENTRYPOINT ["/usr/bin/main"]
