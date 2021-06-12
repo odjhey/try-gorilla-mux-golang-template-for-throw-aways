@@ -1,0 +1,5 @@
+builddir = build
+rule b
+    command = go build -o $out
+
+build $builddir : b
