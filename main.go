@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"myapis/main/handlers"
+	"myapis/main/store"
 
 	"github.com/gorilla/mux"
 )
@@ -30,6 +31,10 @@ func handleRequest() {
 	jsonSubRoutes.HandleFunc("/articles", handlers.ReturnAllArticles)
 	jsonSubRoutes.HandleFunc("/article", handlers.CreateNewArticle).Methods("POST")
 	jsonSubRoutes.HandleFunc("/article/{id}", handlers.ReturnSingleArticle)
+
+	jsonSubRoutes.HandleFunc("/product", store.CreateProductHandler).Methods("POST")
+	jsonSubRoutes.HandleFunc("/product/{id}", store.GetSingleProduct)
+	jsonSubRoutes.HandleFunc("/products", store.GetAllProductsHandler)
 	jsonSubRoutes.Use(loggingMiddleware)
 
 	myRouter.HandleFunc("/hello", handlers.ReturnHello).Methods("POST")

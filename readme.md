@@ -3,4 +3,18 @@
 
 - use this as template for throw away api endpoints used during manual testing
 
-- TODO: use sqlite3 for some persistence
+# TODO
+
+- [x] use sqlite3 for some persistence
+
+# Refs
+
+- https://sqlite.org/cli.html
+- https://gorm.io/docs/query.html
+
+```
+sqlite3
+.open test.db
+.mode line
+select * from products;
+```
