@@ -17,6 +17,11 @@ type Product struct {
 	Price uint   `json:"Price"`
 }
 
+type ResponseMessage struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
+}
+
 func Connect() (db *gorm.DB) {
 	db, err := gorm.Open(sqlite.Open(".data.db"), &gorm.Config{})
 	if err != nil {
@@ -60,10 +65,19 @@ func CreateProductHandler(w http.ResponseWriter, r *http.Request) {
 	err := json.Unmarshal(body, &product)
 	if err != nil {
 		fmt.Println(err)
+		json.NewEncoder(w).Encode(&ResponseMessage{Message: "Bad payload.", Code: ""})
 		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
 
-	fmt.Print(string(body))
+	var existingProduct Product
+	res := db.Where(&existingProduct, "Code =?", product.Code)
+	if res.Error == nil {
+		fmt.Println("Already exist.")
+		json.NewEncoder(w).Encode(&ResponseMessage{Message: "Resource already exist.", Code: ""})
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
 	db.Create(&product)
 	/*
