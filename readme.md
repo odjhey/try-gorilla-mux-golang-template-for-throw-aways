@@ -3,6 +3,8 @@
 
 - use this as template for throw away api endpoints used during manual testing
 
+- sample [postman collection here](docs/golang-try-gorilla-mux.postman_collection.json)
+
 # TODO
 
 - [x] use sqlite3 for some persistence
