@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"myapis/main/docs"
 	_ "myapis/main/docs"
@@ -31,9 +32,9 @@ var (
 func main() {
 	fmt.Println("Rest API v2.0 - Mux Routers")
 	fmt.Printf("Build Time: %s ", buildTime)
-	fmt.Printf("Commit Hash: %s\n", commitHash)
+	fmt.Printf("Commit Hash: %s %s\n", commitHash, os.Getenv("DOKKU_GIT_REV"))
 	docs.SwaggerInfo.Description = fmt.Sprintf(`Sampol
-	buildTime: %s commit: %s `, buildTime, commitHash)
+	buildTime: %s commit: %s %s`, buildTime, commitHash, os.Getenv("DOKKU_GIT_REV"))
 
 	handlers.Articles = []handlers.Article{
 		{Id: "1", Title: "t1", Desc: "d", Content: "content123213"},
