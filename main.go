@@ -19,7 +19,6 @@ import (
 // @version 1.0
 // @description sampol
 // @contact.email odjhey@gmail.com
-// @host localhost:8080
 // @BasePath /
 func main() {
 	fmt.Println("Rest API v2.0 - Mux Routers")
