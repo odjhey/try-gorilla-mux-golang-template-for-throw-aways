@@ -13,8 +13,8 @@ import (
 
 type Product struct {
 	gorm.Model
-	Code  string `json:"Code"`
-	Price uint   `json:"Price"`
+	Code  string `json:"Code" example:"X909" validate:"required"` // Ze product code
+	Price uint   `json:"Price" example:"99"`                      // No decimals for now
 }
 
 type ResponseMessage struct {
@@ -47,6 +47,14 @@ func Connect() (db *gorm.DB) {
 
 }
 
+// GetAllProducts godoc
+// @Summary Get details of all products
+// @Description Get details of all products
+// @Tags product
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} []Product
+// @Router /api/products [get]
 func GetAllProductsHandler(w http.ResponseWriter, r *http.Request) {
 	db := Connect()
 	var products []Product
@@ -57,6 +65,15 @@ func GetAllProductsHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// CreateProduct godoc
+// @Summary Create product
+// @Description Create product
+// @Tags product
+// @Accept  json
+// @Produce  json
+// @Param body body Product true "input payload"
+// @Success 201 {object} Product
+// @Router /api/product [post]
 func CreateProductHandler(w http.ResponseWriter, r *http.Request) {
 	db := Connect()
 
@@ -93,6 +110,16 @@ func CreateProductHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// GetProduct godoc
+// @Summary Read 1 product
+// @Description Get 1 product
+// @Tags product
+// @Accept  json
+// @Produce  json
+// @Param code path string true "product code"
+// @Success 200 {object} Product
+// @Failure 404 {object} ResponseMessage
+// @Router /api/product/{code} [post]
 func GetSingleProduct(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)

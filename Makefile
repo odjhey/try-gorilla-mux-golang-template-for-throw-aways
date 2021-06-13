@@ -16,6 +16,9 @@ before:
 build: $(GO_FILES)
 	@go build -o $(BUILDDIR)
 
+swagger:
+	@ninja 
+
 $(APP): $(GO_FILES)
 	@go build $? -o $@
 
