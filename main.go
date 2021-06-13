@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	"myapis/main/docs"
 	_ "myapis/main/docs"
 	"myapis/main/handlers"
 	"myapis/main/store"
@@ -15,13 +16,24 @@ import (
 	"github.com/gorilla/mux"
 )
 
+var (
+	buildTime  string
+	commitHash string
+	yow        string
+)
+
 // @title ze golang api
 // @version 1.0
 // @description sampol
+// @description build
 // @contact.email odjhey@gmail.com
 // @BasePath /
 func main() {
 	fmt.Println("Rest API v2.0 - Mux Routers")
+	fmt.Printf("Build Time: %s ", buildTime)
+	fmt.Printf("Commit Hash: %s\n", commitHash)
+	docs.SwaggerInfo.Description = fmt.Sprintf(`Sampol
+	buildTime: %s commit: %s `, buildTime, commitHash)
 
 	handlers.Articles = []handlers.Article{
 		{Id: "1", Title: "t1", Desc: "d", Content: "content123213"},
