@@ -6,12 +6,21 @@ import (
 	"log"
 	"net/http"
 
+	_ "myapis/main/docs"
 	"myapis/main/handlers"
 	"myapis/main/store"
+
+	httpSwagger "github.com/swaggo/http-swagger"
 
 	"github.com/gorilla/mux"
 )
 
+// @title ze golang api
+// @version 1.0
+// @description sampol
+// @contact.email odjhey@gmail.com
+// @host localhost:8080
+// @BasePath /
 func main() {
 	fmt.Println("Rest API v2.0 - Mux Routers")
 
@@ -56,8 +65,8 @@ func handleRequest() {
 	myRouter.HandleFunc("/hello", handlers.ReturnHello)
 	myRouter.HandleFunc("/sss", handlers.ReturnSSS)
 
+	myRouter.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 	myRouter.HandleFunc("/", handlers.HomePage)
-
 	log.Fatal(http.ListenAndServe(":8080", myRouter))
 }
 

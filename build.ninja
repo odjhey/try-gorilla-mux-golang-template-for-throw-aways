@@ -1,5 +1,9 @@
 builddir = build
+docsdir = docs
 rule b
     command = go build -o $out
+rule swag
+    command = swag init -g $in --parseDependency --parseInternal -o $out
 
 build $builddir : b
+build $docsdir : swag main.go
