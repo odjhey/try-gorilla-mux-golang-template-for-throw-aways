@@ -13,7 +13,7 @@ RUN go mod download
 COPY . /go/src/myapis/main
 
 # RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo -o build/main myapis/main
-RUN /tmp/ninja/build-cmake/ninja
+RUN /tmp/ninja/build-cmake/ninja build
 
 FROM alpine
 RUN apk add --no-cache ca-certificates && update-ca-certificates
