@@ -3,9 +3,10 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"time"
+
+	qschema "github.com/gorilla/schema"
 )
 
 func GetYaharu(w http.ResponseWriter, r *http.Request) {
@@ -32,9 +33,10 @@ type TPingResponse struct {
 	Duration int    `json:"duration"`
 	Message  string `json:"message"`
 }
-type PingBody struct {
-	Timeout int    `json:"timeout"`
-	Echo    string `json:"echo"`
+
+type PingQueryParam struct {
+	Timeout int    `schema:"timeout"`
+	Echo    string `schema:"echo"`
 }
 
 // Ping godoc
@@ -44,18 +46,20 @@ type PingBody struct {
 // @Tags ping
 // @Accept  json
 // @Produce  json
-// @Param body body PingBody true "input payload"
+// @Param query query PingQueryParam true "input payload"
 // @Success 200 {object} TPingResponse
 // @Router /ping [get]
 func Ping(w http.ResponseWriter, r *http.Request) {
-	reqBody, _ := ioutil.ReadAll(r.Body)
-	var pingBody PingBody
-	json.Unmarshal(reqBody, &pingBody)
+
+	var query PingQueryParam
+	r.ParseForm()
+	qschema.NewDecoder().Decode(&query, r.Form)
+	fmt.Printf("%+v", query)
 
 	ch1 := make(chan TPingResponse)
 	go func() {
-		time.Sleep(time.Duration(pingBody.Timeout) * time.Second)
-		d := TPingResponse{Duration: pingBody.Timeout, Message: pingBody.Echo}
+		time.Sleep(time.Duration(query.Timeout) * time.Second)
+		d := TPingResponse{Duration: query.Timeout, Message: query.Echo}
 		ch1 <- d
 	}()
 

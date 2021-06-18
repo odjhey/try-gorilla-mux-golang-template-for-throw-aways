@@ -76,7 +76,7 @@ func handleRequest() {
 	myRouter.HandleFunc("/hello", handlers.ReturnHello).Methods("POST")
 	myRouter.HandleFunc("/hello", handlers.ReturnHello)
 	myRouter.HandleFunc("/sss", handlers.ReturnSSS)
-	myRouter.HandleFunc("/ping", handlers.Ping)
+	myRouter.HandleFunc("/ping", handlers.Ping).Queries("timeout", "{timeout}", "echo", "{echo}")
 
 	myRouter.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 	myRouter.HandleFunc("/", handlers.HomePage)

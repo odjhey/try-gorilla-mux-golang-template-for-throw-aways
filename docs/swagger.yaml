@@ -8,13 +8,6 @@ definitions:
         description: Valid is true if Time is not NULL
         type: boolean
     type: object
-  handlers.PingBody:
-    properties:
-      echo:
-        type: string
-      timeout:
-        type: integer
-    type: object
   handlers.TPingResponse:
     properties:
       duration:
@@ -131,12 +124,12 @@ paths:
         ping where you can specify timeout before response
         built to use in testing async requests
       parameters:
-      - description: input payload
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/handlers.PingBody'
+      - in: query
+        name: echo
+        type: string
+      - in: query
+        name: timeout
+        type: integer
       produces:
       - application/json
       responses:

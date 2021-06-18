@@ -139,13 +139,14 @@ var doc = `{
                 "summary": "ping",
                 "parameters": [
                     {
-                        "description": "input payload",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/handlers.PingBody"
-                        }
+                        "type": "string",
+                        "name": "echo",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "timeout",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -169,17 +170,6 @@ var doc = `{
                 "valid": {
                     "description": "Valid is true if Time is not NULL",
                     "type": "boolean"
-                }
-            }
-        },
-        "handlers.PingBody": {
-            "type": "object",
-            "properties": {
-                "echo": {
-                    "type": "string"
-                },
-                "timeout": {
-                    "type": "integer"
                 }
             }
         },
