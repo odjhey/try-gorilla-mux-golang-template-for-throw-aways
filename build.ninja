@@ -13,4 +13,4 @@ build $builddir : b
     date=$$(date +'%Y.%m.%d.%H%M%S')
     commithash=$$(git log --pretty=format:’%h’ -n 1)
 
-# build $docsdir : swag main.go
+build $docsdir : swag main.go

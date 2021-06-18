@@ -123,6 +123,40 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/ping": {
+            "get": {
+                "description": "ping where you can specify timeout before response\nbuilt to use in testing async requests",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ping"
+                ],
+                "summary": "ping",
+                "parameters": [
+                    {
+                        "description": "input payload",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.PingBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.TPingResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -135,6 +169,28 @@ var doc = `{
                 "valid": {
                     "description": "Valid is true if Time is not NULL",
                     "type": "boolean"
+                }
+            }
+        },
+        "handlers.PingBody": {
+            "type": "object",
+            "properties": {
+                "echo": {
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "integer"
+                }
+            }
+        },
+        "handlers.TPingResponse": {
+            "type": "object",
+            "properties": {
+                "duration": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
                 }
             }
         },
@@ -198,7 +254,7 @@ var SwaggerInfo = swaggerInfo{
 	BasePath:    "/",
 	Schemes:     []string{},
 	Title:       "ze golang api",
-	Description: "sampol",
+	Description: "sampol\nbuild",
 }
 
 type s struct{}

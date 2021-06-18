@@ -8,6 +8,20 @@ definitions:
         description: Valid is true if Time is not NULL
         type: boolean
     type: object
+  handlers.PingBody:
+    properties:
+      echo:
+        type: string
+      timeout:
+        type: integer
+    type: object
+  handlers.TPingResponse:
+    properties:
+      duration:
+        type: integer
+      message:
+        type: string
+    type: object
   store.Product:
     properties:
       Code:
@@ -39,7 +53,9 @@ definitions:
 info:
   contact:
     email: odjhey@gmail.com
-  description: sampol
+  description: |-
+    sampol
+    build
   title: ze golang api
   version: "1.0"
 paths:
@@ -107,4 +123,28 @@ paths:
       summary: Get details of all products
       tags:
       - product
+  /ping:
+    get:
+      consumes:
+      - application/json
+      description: |-
+        ping where you can specify timeout before response
+        built to use in testing async requests
+      parameters:
+      - description: input payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.PingBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.TPingResponse'
+      summary: ping
+      tags:
+      - ping
 swagger: "2.0"

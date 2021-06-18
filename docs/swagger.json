@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "sampol",
+        "description": "sampol\nbuild",
         "title": "ze golang api",
         "contact": {
             "email": "odjhey@gmail.com"
@@ -107,6 +107,40 @@
                     }
                 }
             }
+        },
+        "/ping": {
+            "get": {
+                "description": "ping where you can specify timeout before response\nbuilt to use in testing async requests",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ping"
+                ],
+                "summary": "ping",
+                "parameters": [
+                    {
+                        "description": "input payload",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.PingBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.TPingResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -119,6 +153,28 @@
                 "valid": {
                     "description": "Valid is true if Time is not NULL",
                     "type": "boolean"
+                }
+            }
+        },
+        "handlers.PingBody": {
+            "type": "object",
+            "properties": {
+                "echo": {
+                    "type": "string"
+                },
+                "timeout": {
+                    "type": "integer"
+                }
+            }
+        },
+        "handlers.TPingResponse": {
+            "type": "object",
+            "properties": {
+                "duration": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
                 }
             }
         },
