@@ -1,19 +1,21 @@
 - try golang for http apis
-- also been wanting to try `ninja`, been using `make` for a long time and it is serving me well, but doesn't hurt to try new things
+- also try `ninja`, been using `make` for a long time and it is serving me well, but doesn't hurt to try new things
 
 - use this as template for throw away api endpoints used during manual testing
 
-- sample [postman collection here](docs/)
+- [docs, swagger files, postman](docs/)
 
 # TODO
 
 - [x] use sqlite3 for some persistence
-- [ ] create swagger doc
+- [x] create swagger doc
+- [ ] add endpoint test reporter (see pactum.js, frisbyjs, pact.io)
 
 # Refs
 
 - https://sqlite.org/cli.html
 - https://gorm.io/docs/query.html
+- https://github.com/gorilla/mux
 
 ```
 sqlite3
